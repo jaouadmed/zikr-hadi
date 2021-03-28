@@ -42,7 +42,9 @@
     "jwtSecretKey": "MjUzY2M4MzM5ODYxZmM2NjI3NmY1YmM0MGFlMzczMzZhNTViMzRkZTNkMDUzYzAyMmE4ZGNmZGRlZmRkOGM3ZjNiYzczZGRmNzE3MzljYThjODRlZjZhM2JiY2ZkZmEzN2NiZmY5N2E1YzZlZmFhYzIwNjZkOWJlOTA2NzQ5MDU=",
     "clientTheme": "none",
     "clientThemeVariant": "",
-    "reactive": false
+    "reactive": false,
+    "entities": ["Type", "Zikr"],
+    "lastLiquibaseTimestamp": 1616945427000
   },
   "git-provider": "GitHub",
   "git-company": "jaouadmed",

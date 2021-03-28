@@ -1,0 +1,42 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="zikr">
+      <h2 data-cy="zikrDetailsHeading"><span>Zikr</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ zikr.id }}</span>
+        </dd>
+        <dt><span>Content</span></dt>
+        <dd>
+          <span>{{ zikr.content }}</span>
+        </dd>
+        <dt><span>Count</span></dt>
+        <dd>
+          <span>{{ zikr.count }}</span>
+        </dd>
+        <dt><span>Employee</span></dt>
+        <dd>
+          <div *ngIf="zikr.employee">
+            <a [routerLink]="['/type', zikr.employee?.id, 'view']">{{ zikr.employee?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/zikr', zikr.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>
