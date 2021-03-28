@@ -30,9 +30,9 @@ public class Type implements Serializable {
     @Column(name = "color")
     private String color;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "title")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "employee" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "title" }, allowSetters = true)
     private Set<Zikr> zikrs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -86,22 +86,22 @@ public class Type implements Serializable {
 
     public Type addZikr(Zikr zikr) {
         this.zikrs.add(zikr);
-        zikr.setEmployee(this);
+        zikr.setTitle(this);
         return this;
     }
 
     public Type removeZikr(Zikr zikr) {
         this.zikrs.remove(zikr);
-        zikr.setEmployee(null);
+        zikr.setTitle(null);
         return this;
     }
 
     public void setZikrs(Set<Zikr> zikrs) {
         if (this.zikrs != null) {
-            this.zikrs.forEach(i -> i.setEmployee(null));
+            this.zikrs.forEach(i -> i.setTitle(null));
         }
         if (zikrs != null) {
-            zikrs.forEach(i -> i.setEmployee(this));
+            zikrs.forEach(i -> i.setTitle(this));
         }
         this.zikrs = zikrs;
     }

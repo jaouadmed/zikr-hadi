@@ -35,7 +35,7 @@
           <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="content"><span>Content</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="count"><span>Count</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="employee.id"><span>Employee</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="title.id"><span>Title</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -47,8 +47,8 @@
           <td>{{ zikr.content }}</td>
           <td>{{ zikr.count }}</td>
           <td>
-            <div *ngIf="zikr.employee">
-              <a [routerLink]="['/type', zikr.employee?.id, 'view']">{{ zikr.employee?.id }}</a>
+            <div *ngIf="zikr.title">
+              <a [routerLink]="['/type', zikr.title?.id, 'view']">{{ zikr.title?.id }}</a>
             </div>
           </td>
           <td class="text-right">

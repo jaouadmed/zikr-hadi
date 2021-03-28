@@ -19,7 +19,7 @@ entity Zikr {
 */
 // defining multiple OneToMany relationships with comments
 relationship OneToMany {
-	Type to Zikr{employee},
+	Type to Zikr{title},
 }
 
 // Set pagination options

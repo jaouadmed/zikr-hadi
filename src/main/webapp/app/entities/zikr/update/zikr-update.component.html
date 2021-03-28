@@ -22,11 +22,11 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="field_employee">Employee</label>
-          <select class="form-control" id="field_employee" data-cy="employee" name="employee" formControlName="employee">
+          <label class="form-control-label" for="field_title">Title</label>
+          <select class="form-control" id="field_title" data-cy="title" name="title" formControlName="title">
             <option [ngValue]="null"></option>
             <option
-              [ngValue]="typeOption.id === editForm.get('employee')!.value?.id ? editForm.get('employee')!.value : typeOption"
+              [ngValue]="typeOption.id === editForm.get('title')!.value?.id ? editForm.get('title')!.value : typeOption"
               *ngFor="let typeOption of typesSharedCollection; trackBy: trackTypeById"
             >
               {{ typeOption.id }}
