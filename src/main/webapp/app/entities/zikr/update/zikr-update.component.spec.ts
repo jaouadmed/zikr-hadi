@@ -42,12 +42,12 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call Type query and add missing value', () => {
         const zikr: IZikr = { id: 456 };
-        const title: IType = { id: 18349 };
-        zikr.title = title;
+        const type: IType = { id: 18349 };
+        zikr.type = type;
 
         const typeCollection: IType[] = [{ id: 69340 }];
         spyOn(typeService, 'query').and.returnValue(of(new HttpResponse({ body: typeCollection })));
-        const additionalTypes = [title];
+        const additionalTypes = [type];
         const expectedCollection: IType[] = [...additionalTypes, ...typeCollection];
         spyOn(typeService, 'addTypeToCollectionIfMissing').and.returnValue(expectedCollection);
 
@@ -61,14 +61,14 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const zikr: IZikr = { id: 456 };
-        const title: IType = { id: 27005 };
-        zikr.title = title;
+        const type: IType = { id: 27005 };
+        zikr.type = type;
 
         activatedRoute.data = of({ zikr });
         comp.ngOnInit();
 
         expect(comp.editForm.value).toEqual(expect.objectContaining(zikr));
-        expect(comp.typesSharedCollection).toContain(title);
+        expect(comp.typesSharedCollection).toContain(type);
       });
     });
 

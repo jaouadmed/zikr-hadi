@@ -15,7 +15,8 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "type",
       "otherEntityRelationshipName": "zikr",
-      "relationshipName": "title"
+      "relationshipName": "type",
+      "otherEntityField": "title"
     }
   ],
   "entityTableName": "zikr",
