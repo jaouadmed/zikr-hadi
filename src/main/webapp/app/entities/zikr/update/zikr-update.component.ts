@@ -23,7 +23,7 @@ export class ZikrUpdateComponent implements OnInit {
     id: [],
     content: [],
     count: [],
-    title: [],
+    type: [],
   });
 
   constructor(
@@ -83,17 +83,17 @@ export class ZikrUpdateComponent implements OnInit {
       id: zikr.id,
       content: zikr.content,
       count: zikr.count,
-      title: zikr.title,
+      type: zikr.type,
     });
 
-    this.typesSharedCollection = this.typeService.addTypeToCollectionIfMissing(this.typesSharedCollection, zikr.title);
+    this.typesSharedCollection = this.typeService.addTypeToCollectionIfMissing(this.typesSharedCollection, zikr.type);
   }
 
   protected loadRelationshipsOptions(): void {
     this.typeService
       .query()
       .pipe(map((res: HttpResponse<IType[]>) => res.body ?? []))
-      .pipe(map((types: IType[]) => this.typeService.addTypeToCollectionIfMissing(types, this.editForm.get('title')!.value)))
+      .pipe(map((types: IType[]) => this.typeService.addTypeToCollectionIfMissing(types, this.editForm.get('type')!.value)))
       .subscribe((types: IType[]) => (this.typesSharedCollection = types));
   }
 
@@ -103,7 +103,7 @@ export class ZikrUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       content: this.editForm.get(['content'])!.value,
       count: this.editForm.get(['count'])!.value,
-      title: this.editForm.get(['title'])!.value,
+      type: this.editForm.get(['type'])!.value,
     };
   }
 }

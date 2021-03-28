@@ -14,7 +14,7 @@
     {
       "relationshipType": "one-to-many",
       "otherEntityName": "zikr",
-      "otherEntityRelationshipName": "title",
+      "otherEntityRelationshipName": "type",
       "relationshipName": "zikr"
     }
   ],
