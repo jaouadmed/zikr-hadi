@@ -22,10 +22,10 @@
         <dd>
           <span>{{ zikr.count }}</span>
         </dd>
-        <dt><span>Employee</span></dt>
+        <dt><span>Title</span></dt>
         <dd>
-          <div *ngIf="zikr.employee">
-            <a [routerLink]="['/type', zikr.employee?.id, 'view']">{{ zikr.employee?.id }}</a>
+          <div *ngIf="zikr.title">
+            <a [routerLink]="['/type', zikr.title?.id, 'view']">{{ zikr.title?.id }}</a>
           </div>
         </dd>
       </dl>

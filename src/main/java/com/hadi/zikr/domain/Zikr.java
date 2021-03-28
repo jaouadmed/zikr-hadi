@@ -28,7 +28,7 @@ public class Zikr implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "zikrs" }, allowSetters = true)
-    private Type employee;
+    private Type title;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -70,17 +70,17 @@ public class Zikr implements Serializable {
         this.count = count;
     }
 
-    public Type getEmployee() {
-        return this.employee;
+    public Type getTitle() {
+        return this.title;
     }
 
-    public Zikr employee(Type type) {
-        this.setEmployee(type);
+    public Zikr title(Type type) {
+        this.setTitle(type);
         return this;
     }
 
-    public void setEmployee(Type type) {
-        this.employee = type;
+    public void setTitle(Type type) {
+        this.title = type;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
