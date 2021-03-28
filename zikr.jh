@@ -1,0 +1,36 @@
+
+/**
+ * The Employee entity.
+ */
+entity Type {
+	title String,
+	color String
+}
+
+entity Zikr {
+	content String,
+	count Long,
+}
+
+/**
+*enum Language {
+*    FRENCH, ENGLISH, SPANISH
+*}
+*/
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	Type to Zikr{employee},
+}
+
+// Set pagination options
+paginate Type, Zikr with infinite-scroll
+//paginate Job with pagination
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Type, Zikr
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
