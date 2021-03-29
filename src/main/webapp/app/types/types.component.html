@@ -1,0 +1,26 @@
+<div class="p-grid p-align-center">
+  <p-listbox [options]="types" [(ngModel)]="selectedType" optionLabel="name" [style]="{ 'background-color': 'unset', width: '100%' }">
+    <ng-template let-type pTemplate="item">
+      <div class="card" style="background-color: {{ type.color }};">
+        <div>{{ type.title }}</div>
+        {{ type.color }}
+      </div>
+    </ng-template>
+  </p-listbox>
+
+  <!--div class="p-col-12 p-md-12 p-lg-3">6</div>
+    <div class="p-col-12 p-md-12 p-lg-3">6</div>
+    <div class="p-col-12 p-md-12 p-lg-3">
+        <p-colorPicker [(ngModel)]="color"></p-colorPicker>
+    </div>
+
+    <!--div class="tbgwrap">
+        < app-card [parentSubject]="parentSubject">
+        </app-card >
+    <div class="tcontrols">
+        <div (click)='cardAnimation("swipeleft")' class="tno"><i class="fa fa-times" aria-hidden="true"></i></div>
+        <div class="ti"><i class="fa fa-info" aria-hidden="true"></i></div>
+        <div (click)='cardAnimation("swiperight")' class="tyes"><i class="fa fa-heart" aria-hidden="true"></i></div>
+    </div>
+    </div-->
+</div>

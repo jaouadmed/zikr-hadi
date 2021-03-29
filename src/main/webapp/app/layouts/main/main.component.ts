@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRouteSnapshot, NavigationEnd, NavigationError } from '@angular/router';
 
 import { AccountService } from 'app/core/auth/account.service';
-import { FindLanguageFromKeyPipe } from 'app/shared/language/find-language-from-key.pipe';
+// import { FindLanguageFromKeyPipe } from 'app/shared/language/find-language-from-key.pipe';
 
 @Component({
   selector: 'jhi-main',
@@ -13,9 +13,9 @@ export class MainComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private titleService: Title,
-    private router: Router,
-    private findLanguageFromKeyPipe: FindLanguageFromKeyPipe
-  ) {}
+    private router: Router
+  ) // private findLanguageFromKeyPipe: FindLanguageFromKeyPipe
+  {}
 
   ngOnInit(): void {
     // try to log in automatically
@@ -29,6 +29,10 @@ export class MainComponent implements OnInit {
         this.router.navigate(['/404']);
       }
     });
+  }
+
+  isAuthenticated(): boolean {
+    return this.accountService.isAuthenticated();
   }
 
   private getPageTitle(routeSnapshot: ActivatedRouteSnapshot): string {
@@ -48,10 +52,10 @@ export class MainComponent implements OnInit {
   }
 
   private updatePageDirection(): void {
-    this.renderer.setAttribute(
+    /* this.renderer.setAttribute(
       document.querySelector('html'),
       'dir',
       this.findLanguageFromKeyPipe.isRTL(this.translateService.currentLang) ? 'rtl' : 'ltr'
-    );
+    ); */
   }
 }

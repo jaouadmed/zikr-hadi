@@ -1,13 +1,21 @@
+<link
+  rel="stylesheet"
+  href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+  integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+  crossorigin="anonymous"
+/>
 <jhi-page-ribbon></jhi-page-ribbon>
 
-<div>
+<div *ngIf="isAuthenticated()">
   <router-outlet name="navbar"></router-outlet>
 </div>
 
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="isAuthenticated()">
   <div class="card jh-card">
     <router-outlet></router-outlet>
   </div>
 
   <jhi-footer></jhi-footer>
 </div>
+
+<router-outlet *ngIf="!isAuthenticated()" name="front"></router-outlet>

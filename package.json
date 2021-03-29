@@ -56,7 +56,8 @@
     "preci:e2e:server:start": "npm run docker:db:await --if-present && npm run docker:others:await --if-present",
     "ci:e2e:server:start": "java -jar target/e2e.$npm_package_config_packaging --spring.profiles.active=$npm_package_config_default_environment -Dlogging.level.ROOT=OFF -Dlogging.level.org.zalando=OFF -Dlogging.level.tech.jhipster=OFF -Dlogging.level.com.hadi.zikr=OFF -Dlogging.level.org.springframework=OFF -Dlogging.level.org.springframework.web=OFF -Dlogging.level.org.springframework.security=OFF --logging.level.org.springframework.web=ERROR",
     "ci:frontend:build": "npm run webapp:build:$npm_package_config_default_environment",
-    "ci:frontend:test": "npm run ci:frontend:build && npm test"
+    "ci:frontend:test": "npm run ci:frontend:build && npm test",
+    "postinstall": "ngcc"
   },
   "config": {
     "backend_port": 8080,
@@ -64,6 +65,7 @@
     "packaging": "jar"
   },
   "dependencies": {
+    "@angular/animations": "^11.2.7",
     "@angular/common": "11.2.5",
     "@angular/compiler": "11.2.5",
     "@angular/core": "11.2.5",
@@ -78,8 +80,12 @@
     "@ng-bootstrap/ng-bootstrap": "9.0.2",
     "bootstrap": "4.6.0",
     "dayjs": "1.10.4",
+    "hammerjs": "^2.0.8",
     "ngx-infinite-scroll": "10.0.1",
     "ngx-webstorage": "7.0.1",
+    "primeflex": "^2.0.0",
+    "primeicons": "^4.1.0",
+    "primeng": "^11.3.1",
     "rxjs": "6.6.6",
     "swagger-ui-dist": "3.45.0",
     "tslib": "2.1.0",
