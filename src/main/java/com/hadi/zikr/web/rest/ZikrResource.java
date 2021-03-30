@@ -2,6 +2,9 @@ package com.hadi.zikr.web.rest;
 
 import com.hadi.zikr.domain.Zikr;
 import com.hadi.zikr.repository.ZikrRepository;
+import com.hadi.zikr.service.ZikrQueryService;
+import com.hadi.zikr.service.ZikrService;
+import com.hadi.zikr.service.criteria.ZikrCriteria;
 import com.hadi.zikr.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -28,7 +30,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class ZikrResource {
 
     private final Logger log = LoggerFactory.getLogger(ZikrResource.class);
@@ -38,10 +39,16 @@ public class ZikrResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final ZikrService zikrService;
+
     private final ZikrRepository zikrRepository;
 
-    public ZikrResource(ZikrRepository zikrRepository) {
+    private final ZikrQueryService zikrQueryService;
+
+    public ZikrResource(ZikrService zikrService, ZikrRepository zikrRepository, ZikrQueryService zikrQueryService) {
+        this.zikrService = zikrService;
         this.zikrRepository = zikrRepository;
+        this.zikrQueryService = zikrQueryService;
     }
 
     /**
@@ -57,7 +64,7 @@ public class ZikrResource {
         if (zikr.getId() != null) {
             throw new BadRequestAlertException("A new zikr cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Zikr result = zikrRepository.save(zikr);
+        Zikr result = zikrService.save(zikr);
         return ResponseEntity
             .created(new URI("/api/zikrs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -89,7 +96,7 @@ public class ZikrResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Zikr result = zikrRepository.save(zikr);
+        Zikr result = zikrService.save(zikr);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, zikr.getId().toString()))
@@ -122,21 +129,7 @@ public class ZikrResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Zikr> result = zikrRepository
-            .findById(zikr.getId())
-            .map(
-                existingZikr -> {
-                    if (zikr.getContent() != null) {
-                        existingZikr.setContent(zikr.getContent());
-                    }
-                    if (zikr.getCount() != null) {
-                        existingZikr.setCount(zikr.getCount());
-                    }
-
-                    return existingZikr;
-                }
-            )
-            .map(zikrRepository::save);
+        Optional<Zikr> result = zikrService.partialUpdate(zikr);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -148,14 +141,27 @@ public class ZikrResource {
      * {@code GET  /zikrs} : get all the zikrs.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of zikrs in body.
      */
     @GetMapping("/zikrs")
-    public ResponseEntity<List<Zikr>> getAllZikrs(Pageable pageable) {
-        log.debug("REST request to get a page of Zikrs");
-        Page<Zikr> page = zikrRepository.findAll(pageable);
+    public ResponseEntity<List<Zikr>> getAllZikrs(ZikrCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Zikrs by criteria: {}", criteria);
+        Page<Zikr> page = zikrQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /zikrs/count} : count all the zikrs.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/zikrs/count")
+    public ResponseEntity<Long> countZikrs(ZikrCriteria criteria) {
+        log.debug("REST request to count Zikrs by criteria: {}", criteria);
+        return ResponseEntity.ok().body(zikrQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -167,7 +173,7 @@ public class ZikrResource {
     @GetMapping("/zikrs/{id}")
     public ResponseEntity<Zikr> getZikr(@PathVariable Long id) {
         log.debug("REST request to get Zikr : {}", id);
-        Optional<Zikr> zikr = zikrRepository.findById(id);
+        Optional<Zikr> zikr = zikrService.findOne(id);
         return ResponseUtil.wrapOrNotFound(zikr);
     }
 
@@ -180,7 +186,7 @@ public class ZikrResource {
     @DeleteMapping("/zikrs/{id}")
     public ResponseEntity<Void> deleteZikr(@PathVariable Long id) {
         log.debug("REST request to delete Zikr : {}", id);
-        zikrRepository.deleteById(id);
+        zikrService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))

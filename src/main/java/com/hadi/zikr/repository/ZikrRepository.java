@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ZikrRepository extends JpaRepository<Zikr, Long> {}
+public interface ZikrRepository extends JpaRepository<Zikr, Long>, JpaSpecificationExecutor<Zikr> {}
