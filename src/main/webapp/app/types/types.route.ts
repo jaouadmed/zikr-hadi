@@ -8,5 +8,4 @@ export const TYPES_ROUTE: Route = {
   data: {
     pageTitle: 'Welcome, Java Hipster!',
   },
-  outlet: 'front',
 };

@@ -1,0 +1,16 @@
+<div class="tphoto" style="z-index: 0" *ngIf="index + 1 < azkar.length">
+  <div class="tname">{{ azkar[index + 1].content }}</div>
+</div>
+<div
+  *ngIf="index < azkar.length"
+  class="tphoto"
+  [@cardAnimator]="animationState"
+  (@cardAnimator.done)="resetAnimationState()"
+  (swipeleft)="startAnimation('swipeleft')"
+  (swiperight)="startAnimation('swiperight')"
+>
+  <div class="tname">{{ azkar[index].content }}</div>
+  <div class="tcontrols" (click)="startAnimation('swiperight')">
+    {{ azkar[index].count }}
+  </div>
+</div>

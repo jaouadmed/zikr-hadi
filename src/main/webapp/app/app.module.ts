@@ -28,6 +28,7 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ErrorComponent } from './layouts/error/error.component';
 import { TypesModule } from './types/types.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ZikrsModule } from './zikrs/zikrs.module';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     HomeModule,
     TypesModule,
+    ZikrsModule,
     BrowserAnimationsModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     EntityRoutingModule,
