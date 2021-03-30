@@ -6,8 +6,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.hadi.zikr.IntegrationTest;
+import com.hadi.zikr.domain.Type;
 import com.hadi.zikr.domain.Zikr;
 import com.hadi.zikr.repository.ZikrRepository;
+import com.hadi.zikr.service.criteria.ZikrCriteria;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -34,6 +36,7 @@ class ZikrResourceIT {
 
     private static final Long DEFAULT_COUNT = 1L;
     private static final Long UPDATED_COUNT = 2L;
+    private static final Long SMALLER_COUNT = 1L - 1L;
 
     private static final String ENTITY_API_URL = "/api/zikrs";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -144,6 +147,264 @@ class ZikrResourceIT {
             .andExpect(jsonPath("$.id").value(zikr.getId().intValue()))
             .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT))
             .andExpect(jsonPath("$.count").value(DEFAULT_COUNT.intValue()));
+    }
+
+    @Test
+    @Transactional
+    void getZikrsByIdFiltering() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        Long id = zikr.getId();
+
+        defaultZikrShouldBeFound("id.equals=" + id);
+        defaultZikrShouldNotBeFound("id.notEquals=" + id);
+
+        defaultZikrShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultZikrShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultZikrShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultZikrShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByContentIsEqualToSomething() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where content equals to DEFAULT_CONTENT
+        defaultZikrShouldBeFound("content.equals=" + DEFAULT_CONTENT);
+
+        // Get all the zikrList where content equals to UPDATED_CONTENT
+        defaultZikrShouldNotBeFound("content.equals=" + UPDATED_CONTENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByContentIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where content not equals to DEFAULT_CONTENT
+        defaultZikrShouldNotBeFound("content.notEquals=" + DEFAULT_CONTENT);
+
+        // Get all the zikrList where content not equals to UPDATED_CONTENT
+        defaultZikrShouldBeFound("content.notEquals=" + UPDATED_CONTENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByContentIsInShouldWork() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where content in DEFAULT_CONTENT or UPDATED_CONTENT
+        defaultZikrShouldBeFound("content.in=" + DEFAULT_CONTENT + "," + UPDATED_CONTENT);
+
+        // Get all the zikrList where content equals to UPDATED_CONTENT
+        defaultZikrShouldNotBeFound("content.in=" + UPDATED_CONTENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByContentIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where content is not null
+        defaultZikrShouldBeFound("content.specified=true");
+
+        // Get all the zikrList where content is null
+        defaultZikrShouldNotBeFound("content.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByContentContainsSomething() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where content contains DEFAULT_CONTENT
+        defaultZikrShouldBeFound("content.contains=" + DEFAULT_CONTENT);
+
+        // Get all the zikrList where content contains UPDATED_CONTENT
+        defaultZikrShouldNotBeFound("content.contains=" + UPDATED_CONTENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByContentNotContainsSomething() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where content does not contain DEFAULT_CONTENT
+        defaultZikrShouldNotBeFound("content.doesNotContain=" + DEFAULT_CONTENT);
+
+        // Get all the zikrList where content does not contain UPDATED_CONTENT
+        defaultZikrShouldBeFound("content.doesNotContain=" + UPDATED_CONTENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByCountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where count equals to DEFAULT_COUNT
+        defaultZikrShouldBeFound("count.equals=" + DEFAULT_COUNT);
+
+        // Get all the zikrList where count equals to UPDATED_COUNT
+        defaultZikrShouldNotBeFound("count.equals=" + UPDATED_COUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByCountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where count not equals to DEFAULT_COUNT
+        defaultZikrShouldNotBeFound("count.notEquals=" + DEFAULT_COUNT);
+
+        // Get all the zikrList where count not equals to UPDATED_COUNT
+        defaultZikrShouldBeFound("count.notEquals=" + UPDATED_COUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByCountIsInShouldWork() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where count in DEFAULT_COUNT or UPDATED_COUNT
+        defaultZikrShouldBeFound("count.in=" + DEFAULT_COUNT + "," + UPDATED_COUNT);
+
+        // Get all the zikrList where count equals to UPDATED_COUNT
+        defaultZikrShouldNotBeFound("count.in=" + UPDATED_COUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByCountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where count is not null
+        defaultZikrShouldBeFound("count.specified=true");
+
+        // Get all the zikrList where count is null
+        defaultZikrShouldNotBeFound("count.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByCountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where count is greater than or equal to DEFAULT_COUNT
+        defaultZikrShouldBeFound("count.greaterThanOrEqual=" + DEFAULT_COUNT);
+
+        // Get all the zikrList where count is greater than or equal to UPDATED_COUNT
+        defaultZikrShouldNotBeFound("count.greaterThanOrEqual=" + UPDATED_COUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByCountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where count is less than or equal to DEFAULT_COUNT
+        defaultZikrShouldBeFound("count.lessThanOrEqual=" + DEFAULT_COUNT);
+
+        // Get all the zikrList where count is less than or equal to SMALLER_COUNT
+        defaultZikrShouldNotBeFound("count.lessThanOrEqual=" + SMALLER_COUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByCountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where count is less than DEFAULT_COUNT
+        defaultZikrShouldNotBeFound("count.lessThan=" + DEFAULT_COUNT);
+
+        // Get all the zikrList where count is less than UPDATED_COUNT
+        defaultZikrShouldBeFound("count.lessThan=" + UPDATED_COUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByCountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+
+        // Get all the zikrList where count is greater than DEFAULT_COUNT
+        defaultZikrShouldNotBeFound("count.greaterThan=" + DEFAULT_COUNT);
+
+        // Get all the zikrList where count is greater than SMALLER_COUNT
+        defaultZikrShouldBeFound("count.greaterThan=" + SMALLER_COUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllZikrsByTypeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        zikrRepository.saveAndFlush(zikr);
+        Type type = TypeResourceIT.createEntity(em);
+        em.persist(type);
+        em.flush();
+        zikr.setType(type);
+        zikrRepository.saveAndFlush(zikr);
+        Long typeId = type.getId();
+
+        // Get all the zikrList where type equals to typeId
+        defaultZikrShouldBeFound("typeId.equals=" + typeId);
+
+        // Get all the zikrList where type equals to (typeId + 1)
+        defaultZikrShouldNotBeFound("typeId.equals=" + (typeId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultZikrShouldBeFound(String filter) throws Exception {
+        restZikrMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(zikr.getId().intValue())))
+            .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT)))
+            .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.intValue())));
+
+        // Check, that the count call also returns 1
+        restZikrMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultZikrShouldNotBeFound(String filter) throws Exception {
+        restZikrMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restZikrMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

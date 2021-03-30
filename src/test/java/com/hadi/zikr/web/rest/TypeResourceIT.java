@@ -7,7 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.hadi.zikr.IntegrationTest;
 import com.hadi.zikr.domain.Type;
+import com.hadi.zikr.domain.Zikr;
 import com.hadi.zikr.repository.TypeRepository;
+import com.hadi.zikr.service.criteria.TypeCriteria;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -144,6 +146,238 @@ class TypeResourceIT {
             .andExpect(jsonPath("$.id").value(type.getId().intValue()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
             .andExpect(jsonPath("$.color").value(DEFAULT_COLOR));
+    }
+
+    @Test
+    @Transactional
+    void getTypesByIdFiltering() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        Long id = type.getId();
+
+        defaultTypeShouldBeFound("id.equals=" + id);
+        defaultTypeShouldNotBeFound("id.notEquals=" + id);
+
+        defaultTypeShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultTypeShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultTypeShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultTypeShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByTitleIsEqualToSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where title equals to DEFAULT_TITLE
+        defaultTypeShouldBeFound("title.equals=" + DEFAULT_TITLE);
+
+        // Get all the typeList where title equals to UPDATED_TITLE
+        defaultTypeShouldNotBeFound("title.equals=" + UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByTitleIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where title not equals to DEFAULT_TITLE
+        defaultTypeShouldNotBeFound("title.notEquals=" + DEFAULT_TITLE);
+
+        // Get all the typeList where title not equals to UPDATED_TITLE
+        defaultTypeShouldBeFound("title.notEquals=" + UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByTitleIsInShouldWork() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where title in DEFAULT_TITLE or UPDATED_TITLE
+        defaultTypeShouldBeFound("title.in=" + DEFAULT_TITLE + "," + UPDATED_TITLE);
+
+        // Get all the typeList where title equals to UPDATED_TITLE
+        defaultTypeShouldNotBeFound("title.in=" + UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByTitleIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where title is not null
+        defaultTypeShouldBeFound("title.specified=true");
+
+        // Get all the typeList where title is null
+        defaultTypeShouldNotBeFound("title.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByTitleContainsSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where title contains DEFAULT_TITLE
+        defaultTypeShouldBeFound("title.contains=" + DEFAULT_TITLE);
+
+        // Get all the typeList where title contains UPDATED_TITLE
+        defaultTypeShouldNotBeFound("title.contains=" + UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByTitleNotContainsSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where title does not contain DEFAULT_TITLE
+        defaultTypeShouldNotBeFound("title.doesNotContain=" + DEFAULT_TITLE);
+
+        // Get all the typeList where title does not contain UPDATED_TITLE
+        defaultTypeShouldBeFound("title.doesNotContain=" + UPDATED_TITLE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByColorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where color equals to DEFAULT_COLOR
+        defaultTypeShouldBeFound("color.equals=" + DEFAULT_COLOR);
+
+        // Get all the typeList where color equals to UPDATED_COLOR
+        defaultTypeShouldNotBeFound("color.equals=" + UPDATED_COLOR);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByColorIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where color not equals to DEFAULT_COLOR
+        defaultTypeShouldNotBeFound("color.notEquals=" + DEFAULT_COLOR);
+
+        // Get all the typeList where color not equals to UPDATED_COLOR
+        defaultTypeShouldBeFound("color.notEquals=" + UPDATED_COLOR);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByColorIsInShouldWork() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where color in DEFAULT_COLOR or UPDATED_COLOR
+        defaultTypeShouldBeFound("color.in=" + DEFAULT_COLOR + "," + UPDATED_COLOR);
+
+        // Get all the typeList where color equals to UPDATED_COLOR
+        defaultTypeShouldNotBeFound("color.in=" + UPDATED_COLOR);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByColorIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where color is not null
+        defaultTypeShouldBeFound("color.specified=true");
+
+        // Get all the typeList where color is null
+        defaultTypeShouldNotBeFound("color.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByColorContainsSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where color contains DEFAULT_COLOR
+        defaultTypeShouldBeFound("color.contains=" + DEFAULT_COLOR);
+
+        // Get all the typeList where color contains UPDATED_COLOR
+        defaultTypeShouldNotBeFound("color.contains=" + UPDATED_COLOR);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByColorNotContainsSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where color does not contain DEFAULT_COLOR
+        defaultTypeShouldNotBeFound("color.doesNotContain=" + DEFAULT_COLOR);
+
+        // Get all the typeList where color does not contain UPDATED_COLOR
+        defaultTypeShouldBeFound("color.doesNotContain=" + UPDATED_COLOR);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByZikrIsEqualToSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+        Zikr zikr = ZikrResourceIT.createEntity(em);
+        em.persist(zikr);
+        em.flush();
+        type.addZikr(zikr);
+        typeRepository.saveAndFlush(type);
+        Long zikrId = zikr.getId();
+
+        // Get all the typeList where zikr equals to zikrId
+        defaultTypeShouldBeFound("zikrId.equals=" + zikrId);
+
+        // Get all the typeList where zikr equals to (zikrId + 1)
+        defaultTypeShouldNotBeFound("zikrId.equals=" + (zikrId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultTypeShouldBeFound(String filter) throws Exception {
+        restTypeMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(type.getId().intValue())))
+            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
+            .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR)));
+
+        // Check, that the count call also returns 1
+        restTypeMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultTypeShouldNotBeFound(String filter) throws Exception {
+        restTypeMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restTypeMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

@@ -2,6 +2,9 @@ package com.hadi.zikr.web.rest;
 
 import com.hadi.zikr.domain.Type;
 import com.hadi.zikr.repository.TypeRepository;
+import com.hadi.zikr.service.TypeQueryService;
+import com.hadi.zikr.service.TypeService;
+import com.hadi.zikr.service.criteria.TypeCriteria;
 import com.hadi.zikr.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -28,7 +30,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class TypeResource {
 
     private final Logger log = LoggerFactory.getLogger(TypeResource.class);
@@ -38,10 +39,16 @@ public class TypeResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final TypeService typeService;
+
     private final TypeRepository typeRepository;
 
-    public TypeResource(TypeRepository typeRepository) {
+    private final TypeQueryService typeQueryService;
+
+    public TypeResource(TypeService typeService, TypeRepository typeRepository, TypeQueryService typeQueryService) {
+        this.typeService = typeService;
         this.typeRepository = typeRepository;
+        this.typeQueryService = typeQueryService;
     }
 
     /**
@@ -57,7 +64,7 @@ public class TypeResource {
         if (type.getId() != null) {
             throw new BadRequestAlertException("A new type cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Type result = typeRepository.save(type);
+        Type result = typeService.save(type);
         return ResponseEntity
             .created(new URI("/api/types/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -89,7 +96,7 @@ public class TypeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Type result = typeRepository.save(type);
+        Type result = typeService.save(type);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, type.getId().toString()))
@@ -122,21 +129,7 @@ public class TypeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Type> result = typeRepository
-            .findById(type.getId())
-            .map(
-                existingType -> {
-                    if (type.getTitle() != null) {
-                        existingType.setTitle(type.getTitle());
-                    }
-                    if (type.getColor() != null) {
-                        existingType.setColor(type.getColor());
-                    }
-
-                    return existingType;
-                }
-            )
-            .map(typeRepository::save);
+        Optional<Type> result = typeService.partialUpdate(type);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -148,14 +141,27 @@ public class TypeResource {
      * {@code GET  /types} : get all the types.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of types in body.
      */
     @GetMapping("/types")
-    public ResponseEntity<List<Type>> getAllTypes(Pageable pageable) {
-        log.debug("REST request to get a page of Types");
-        Page<Type> page = typeRepository.findAll(pageable);
+    public ResponseEntity<List<Type>> getAllTypes(TypeCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Types by criteria: {}", criteria);
+        Page<Type> page = typeQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /types/count} : count all the types.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/types/count")
+    public ResponseEntity<Long> countTypes(TypeCriteria criteria) {
+        log.debug("REST request to count Types by criteria: {}", criteria);
+        return ResponseEntity.ok().body(typeQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -167,7 +173,7 @@ public class TypeResource {
     @GetMapping("/types/{id}")
     public ResponseEntity<Type> getType(@PathVariable Long id) {
         log.debug("REST request to get Type : {}", id);
-        Optional<Type> type = typeRepository.findById(id);
+        Optional<Type> type = typeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(type);
     }
 
@@ -180,7 +186,7 @@ public class TypeResource {
     @DeleteMapping("/types/{id}")
     public ResponseEntity<Void> deleteType(@PathVariable Long id) {
         log.debug("REST request to delete Type : {}", id);
-        typeRepository.deleteById(id);
+        typeService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))

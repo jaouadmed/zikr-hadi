@@ -34,3 +34,6 @@ service all with serviceImpl except Type, Zikr
 
 // Set an angular suffix
 // angularSuffix * with mySuffix
+
+
+filter *
