@@ -4,18 +4,27 @@
   integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
   crossorigin="anonymous"
 />
-<jhi-page-ribbon></jhi-page-ribbon>
-
+<div *ngIf="!isAuthenticated()">
+  <ng-container *ngTemplateOutlet="front"></ng-container>
+</div>
 <div *ngIf="isAuthenticated()">
-  <router-outlet name="navbar"></router-outlet>
+  <ng-container *ngTemplateOutlet="back"></ng-container>
 </div>
 
-<div class="container-fluid" *ngIf="isAuthenticated()">
-  <div class="card jh-card">
-    <router-outlet></router-outlet>
+<ng-template #front>
+  <router-outlet> </router-outlet>
+</ng-template>
+
+<ng-template #back>
+  <jhi-page-ribbon></jhi-page-ribbon>
+  <div>
+    <router-outlet name="navbar"></router-outlet>
   </div>
+  <div class="container-fluid">
+    <div class="card jh-card">
+      <router-outlet></router-outlet>
+    </div>
 
-  <jhi-footer></jhi-footer>
-</div>
-
-<router-outlet *ngIf="!isAuthenticated()" name="front"></router-outlet>
+    <jhi-footer></jhi-footer>
+  </div>
+</ng-template>
