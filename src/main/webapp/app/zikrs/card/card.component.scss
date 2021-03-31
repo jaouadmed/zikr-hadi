@@ -1,7 +1,10 @@
-.tphoto {
+@import url(https://fonts.googleapis.com/earlyaccess/droidarabicnaskh.css);
+
+/*font-family: 'Droid Arabic Naskh', serif;*/
+
+.tcard {
   width: 80%;
   height: 80%;
-  margin: 0 auto;
   position: absolute;
   margin: 10% 10% auto;
   border-radius: 10px;
@@ -11,19 +14,33 @@
   border: 1px solid #c0c0c0;
   background-color: #fff;
   box-shadow: 2px 2px 2px #c0c0c0;
+  font-family: 'Droid Arabic Naskh', serif;
+  direction: rtl;
+  text-align: right;
+}
+
+.tcontent {
+  margin: 10% 10% auto;
+  font-weight: 3em;
 }
 
 .tcontrols {
-  width: 80%;
+  width: 96%;
   height: 15%;
   overflow: hidden;
-  margin: 5% 10% auto;
+  margin: 2% 2% auto;
+  text-align: center;
+  vertical-align: middle;
   position: absolute;
-  bottom: 1em;
+  bottom: 1%;
   border-radius: 10px;
   -moz-border-radius: 10px;
   -o-border-radius: 10px;
   -ms-border-radius: 10px;
   border: 1px solid #c0c0c0;
-  background-color: #fff2;
+  background-color: rgba(53, 50, 50, 0.133);
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
 }

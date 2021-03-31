@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TypeService } from 'app/entities/type/service/type.service';
 import { IType } from 'app/entities/type/type.model';
 import { Subject } from 'rxjs';
@@ -16,12 +16,19 @@ export class TypesComponent implements OnInit {
   types: IType[];
   selectedType: IType;
 
-  constructor(protected typeService: TypeService, private router: Router) {
+  constructor(protected typeService: TypeService, private router: Router, private route: ActivatedRoute) {
     this.types = [];
     this.selectedType = {};
   }
 
   ngOnInit(): void {
+    // routing color to change bachground color
+    this.route.queryParams.subscribe(values => {
+      if (values.color === '1') {
+        localStorage.getItem('color') === 'white' ? localStorage.setItem('color', 'black') : localStorage.setItem('color', 'white');
+      }
+    });
+
     this.typeService.query().subscribe((res: HttpResponse<IType[]>) => {
       if (res.body) {
         this.types = res.body;

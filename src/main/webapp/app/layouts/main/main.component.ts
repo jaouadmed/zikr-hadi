@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRouteSnapshot, NavigationEnd, NavigationError } from '@angular/router';
 
@@ -9,13 +9,14 @@ import { AccountService } from 'app/core/auth/account.service';
   selector: 'jhi-main',
   templateUrl: './main.component.html',
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, DoCheck {
+  color: any;
+
   constructor(
     private accountService: AccountService,
     private titleService: Title,
-    private router: Router
-  ) // private findLanguageFromKeyPipe: FindLanguageFromKeyPipe
-  {}
+    private router: Router // private findLanguageFromKeyPipe: FindLanguageFromKeyPipe
+  ) {}
 
   ngOnInit(): void {
     // try to log in automatically
@@ -29,6 +30,13 @@ export class MainComponent implements OnInit {
         this.router.navigate(['/404']);
       }
     });
+  }
+
+  ngDoCheck(): void {
+    if (!localStorage.getItem('color')) {
+      localStorage.setItem('color', 'white');
+    }
+    this.color = localStorage.getItem('color');
   }
 
   isAuthenticated(): boolean {

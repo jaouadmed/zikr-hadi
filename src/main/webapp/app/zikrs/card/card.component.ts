@@ -13,8 +13,8 @@ import * as kf from './keyframes';
   styleUrls: ['./card.component.scss'],
   animations: [
     trigger('cardAnimator', [
-      transition('* => swiperight', animate(750, keyframes(kf.swiperight))),
-      transition('* => swipeleft', animate(750, keyframes(kf.swipeleft))),
+      transition('* => swiperight', animate(500, keyframes(kf.swiperight))),
+      transition('* => swipeleft', animate(500, keyframes(kf.swipeleft))),
     ]),
   ],
 })
@@ -27,9 +27,12 @@ export class CardComponent implements OnInit, OnDestroy {
 
   animationState: string;
 
-  onetime = 0;
+  onetime = 1;
 
   selectedTypeId: any;
+
+  counter = 0;
+  firstTimeCounter = true;
 
   constructor(protected zikrService: ZikrService, private route: ActivatedRoute) {
     this.animationState = '';
@@ -37,9 +40,12 @@ export class CardComponent implements OnInit, OnDestroy {
     this.index = 0;
     this.selectedTypeId = this.route.snapshot.paramMap.get('typeId');
 
+    this.counter = 0;
+
     this.zikrService.query({ 'typeId.equals': this.selectedTypeId }).subscribe((res: HttpResponse<IZikr[]>) => {
       if (res.body) {
         this.azkar = res.body;
+        this.counter = this.azkar[0].count;
       }
     });
   }
@@ -48,12 +54,20 @@ export class CardComponent implements OnInit, OnDestroy {
     window.console.log('oninit');
   }
 
-  startAnimation(state: string): void {
+  startAnimation(): void {
     this.onetime = 0;
-    if (this.azkar[this.index].count > 1) {
-      this.azkar[this.index].count--;
+    if (this.firstTimeCounter) {
+      this.counter = this.azkar[this.index].count;
+      this.firstTimeCounter = false;
+    }
+    if (this.counter > 1) {
+      this.counter--;
     } else {
-      this.animationState = state;
+      this.animationState = this.index % 2 ? 'swiperight' : 'swipeleft';
+      this.firstTimeCounter = true;
+      if (this.index < this.azkar.length - 1) {
+        this.counter = this.azkar[this.index + 1].count;
+      }
     }
   }
 

@@ -14,6 +14,7 @@ import { TypeService } from '../service/type.service';
 })
 export class TypeUpdateComponent implements OnInit {
   isSaving = false;
+  color: string;
 
   editForm = this.fb.group({
     id: [],
@@ -21,7 +22,9 @@ export class TypeUpdateComponent implements OnInit {
     color: [],
   });
 
-  constructor(protected typeService: TypeService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(protected typeService: TypeService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {
+    this.color = '';
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ type }) => {
@@ -68,6 +71,7 @@ export class TypeUpdateComponent implements OnInit {
       title: type.title,
       color: type.color,
     });
+    this.color = type.color ? type.color : 'blue';
   }
 
   protected createFromForm(): IType {

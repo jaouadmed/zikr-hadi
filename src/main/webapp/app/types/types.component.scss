@@ -1,5 +1,10 @@
+@import url(https://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
 .card {
-  padding: 3em 2em 3em 2em;
+  padding: 2em 1em 2em 1em;
   width: 100%;
   border-radius: 0.5em;
+  font-family: 'Droid Arabic Kufi', serif;
+  direction: rtl;
+  text-align: right;
+  font-size: 1.5em;
 }

@@ -1,18 +1,19 @@
-<p-listbox
-  class="p-grid p-align-center"
-  [options]="types"
-  [(ngModel)]="selectedType"
-  optionLabel="name"
-  [style]="{ 'background-color': 'unset', width: '100%' }"
-  (onClick)="typesListBoxSelectEvent($event)"
->
-  <ng-template class="p-col-12 p-md-12 p-lg-3" let-type pTemplate="item">
-    <div class="card" style="background-color: {{ type.color }};">
-      <div>{{ type.title }}</div>
-      {{ type.color }}
-    </div>
-  </ng-template>
-</p-listbox>
+<p-scrollPanel [style]="{ width: '100%', height: '101%' }">
+  <p-listbox
+    class="p-grid p-align-center"
+    [options]="types"
+    [(ngModel)]="selectedType"
+    optionLabel="name"
+    [style]="{ 'background-color': 'unset', width: '100%', height: '100%' }"
+    (onClick)="typesListBoxSelectEvent($event)"
+  >
+    <ng-template class="p-col-12 p-md-12 p-lg-3" let-type pTemplate="item">
+      <div class="card" style="box-shadow: inset 0 0 0 1000px {{ type.color }}; background-image: url('{{ type.color }}');">
+        <div>{{ type.title }}</div>
+      </div>
+    </ng-template>
+  </p-listbox>
+</p-scrollPanel>
 
 <!--div class="p-col-12 p-md-12 p-lg-3">6</div>
     <div class="p-col-12 p-md-12 p-lg-3">6</div>
