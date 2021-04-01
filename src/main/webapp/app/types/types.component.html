@@ -8,28 +8,9 @@
     (onClick)="typesListBoxSelectEvent($event)"
   >
     <ng-template class="p-col-12 p-md-12 p-lg-3" let-type pTemplate="item">
-      <div
-        class="card"
-        style="box-shadow: inset 0 0 0 1000px {{ type.color }}; background-size: cover; background-image: url('{{ type.img }}');"
-      >
+      <div class="card" style="box-shadow: inset 0 0 0 1000px {{ type.color }}; background-image: url('{{ type.img }}');">
         <div>{{ type.title }}</div>
       </div>
     </ng-template>
   </p-listbox>
 </p-scrollPanel>
-
-<!--div class="p-col-12 p-md-12 p-lg-3">6</div>
-    <div class="p-col-12 p-md-12 p-lg-3">6</div>
-    <div class="p-col-12 p-md-12 p-lg-3">
-        <p-colorPicker [(ngModel)]="color"></p-colorPicker>
-    </div>
-
-    <!--div class="tbgwrap">
-        < app-card [parentSubject]="parentSubject">
-        </app-card >
-    <div class="tcontrols">
-        <div (click)='cardAnimation("swipeleft")' class="tno"><i class="fa fa-times" aria-hidden="true"></i></div>
-        <div class="ti"><i class="fa fa-info" aria-hidden="true"></i></div>
-        <div (click)='cardAnimation("swiperight")' class="tyes"><i class="fa fa-heart" aria-hidden="true"></i></div>
-    </div>
-    </div-->
