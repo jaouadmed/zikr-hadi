@@ -1,7 +1,8 @@
 @import url(https://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
 .card {
-  padding: 3em 1em 3em 1em;
+  // padding: 3em 1em 3em 1em;
   width: 100%;
+  height: 25vh;
   border-radius: 0.5em;
   font-family: 'Droid Arabic Kufi', serif;
   direction: rtl;
@@ -10,4 +11,8 @@
   font-weight: 700;
   color: #ffffff;
   background-size: cover;
+}
+
+.card > div {
+  margin: 10vh 5vh auto;
 }
