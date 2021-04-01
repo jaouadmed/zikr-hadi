@@ -18,7 +18,15 @@
 
         <div class="form-group">
           <label class="form-control-label" for="field_color">Color</label>
-          <input type="text" class="form-control" name="color" id="field_color" data-cy="color" formControlName="color" />
+          <!--input type="text" class="form-control" name="color" id="field_color" data-cy="color" formControlName="color" /-->
+          <input
+            [colorPicker]="editForm.get(['color'])!.value"
+            [value]="editForm.get(['color'])!.value"
+            (colorPickerChange)="editForm.get(['color'])!.setValue($event)"
+            [style.background]="editForm.get(['color'])!.value"
+            class="form-control"
+            formControlName="color"
+          />
         </div>
 
         <div class="form-group">
