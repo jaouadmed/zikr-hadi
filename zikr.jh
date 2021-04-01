@@ -4,11 +4,12 @@
  */
 entity Type {
 	title String,
-	color String
+	color String,
+    img String
 }
 
 entity Zikr {
-	content String,
+	content TextBlob,
 	count Long,
 }
 
