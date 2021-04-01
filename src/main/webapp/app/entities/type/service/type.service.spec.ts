@@ -24,6 +24,7 @@ describe('Service Tests', () => {
         id: 0,
         title: 'AAAAAAA',
         color: 'AAAAAAA',
+        img: 'AAAAAAA',
       };
     });
 
@@ -61,6 +62,7 @@ describe('Service Tests', () => {
             id: 1,
             title: 'BBBBBB',
             color: 'BBBBBB',
+            img: 'BBBBBB',
           },
           elemDefault
         );
@@ -78,6 +80,7 @@ describe('Service Tests', () => {
         const patchObject = Object.assign(
           {
             title: 'BBBBBB',
+            img: 'BBBBBB',
           },
           new Type()
         );
@@ -99,6 +102,7 @@ describe('Service Tests', () => {
             id: 1,
             title: 'BBBBBB',
             color: 'BBBBBB',
+            img: 'BBBBBB',
           },
           elemDefault
         );
@@ -150,7 +154,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Type to an array', () => {
-          const typeArray: IType[] = [{ id: 123 }, { id: 456 }, { id: 96258 }];
+          const typeArray: IType[] = [{ id: 123 }, { id: 456 }, { id: 64186 }];
           const typeCollection: IType[] = [{ id: 123 }];
           expectedResult = service.addTypeToCollectionIfMissing(typeCollection, ...typeArray);
           expect(expectedResult).toHaveLength(3);

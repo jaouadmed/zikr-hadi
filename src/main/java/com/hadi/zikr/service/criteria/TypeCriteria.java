@@ -30,6 +30,8 @@ public class TypeCriteria implements Serializable, Criteria {
 
     private StringFilter color;
 
+    private StringFilter img;
+
     private LongFilter zikrId;
 
     public TypeCriteria() {}
@@ -38,6 +40,7 @@ public class TypeCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.title = other.title == null ? null : other.title.copy();
         this.color = other.color == null ? null : other.color.copy();
+        this.img = other.img == null ? null : other.img.copy();
         this.zikrId = other.zikrId == null ? null : other.zikrId.copy();
     }
 
@@ -91,6 +94,21 @@ public class TypeCriteria implements Serializable, Criteria {
         this.color = color;
     }
 
+    public StringFilter getImg() {
+        return img;
+    }
+
+    public StringFilter img() {
+        if (img == null) {
+            img = new StringFilter();
+        }
+        return img;
+    }
+
+    public void setImg(StringFilter img) {
+        this.img = img;
+    }
+
     public LongFilter getZikrId() {
         return zikrId;
     }
@@ -119,13 +137,14 @@ public class TypeCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(title, that.title) &&
             Objects.equals(color, that.color) &&
+            Objects.equals(img, that.img) &&
             Objects.equals(zikrId, that.zikrId)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, color, zikrId);
+        return Objects.hash(id, title, color, img, zikrId);
     }
 
     // prettier-ignore
@@ -135,6 +154,7 @@ public class TypeCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (title != null ? "title=" + title + ", " : "") +
             (color != null ? "color=" + color + ", " : "") +
+            (img != null ? "img=" + img + ", " : "") +
             (zikrId != null ? "zikrId=" + zikrId + ", " : "") +
             "}";
     }

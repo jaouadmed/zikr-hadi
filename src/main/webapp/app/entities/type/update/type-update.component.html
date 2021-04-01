@@ -18,17 +18,12 @@
 
         <div class="form-group">
           <label class="form-control-label" for="field_color">Color</label>
-          <!--input type="text" name="color" id="field_color" formControlName="color" class="form-control" value="{{color}}" /-->
-          <!--p-colorPicker class="p-colorpicker-hue-handle" [(ngModel)]="color" name="color" id="field_color" formControlName="color" data-cy="color"></p-colorPicker-->
-          <!--input class="form-control" [(colorPicker)]="color" [style.background]="color" formControlName="color" [value]="color" (colorPickerChange)="color=$event" /-->
-          <input
-            [colorPicker]="editForm.get(['color'])!.value"
-            [style.background]="editForm.get(['color'])!.value"
-            [value]="(editForm?.get(['color']))!.value"
-            (colorPickerChange)="editForm?.get(['color'])!.setValue($event)"
-            class="form-control"
-            formControlName="color"
-          />
+          <input type="text" class="form-control" name="color" id="field_color" data-cy="color" formControlName="color" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_img">Img</label>
+          <input type="text" class="form-control" name="img" id="field_img" data-cy="img" formControlName="img" />
         </div>
       </div>
 

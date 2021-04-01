@@ -37,6 +37,9 @@ class TypeResourceIT {
     private static final String DEFAULT_COLOR = "AAAAAAAAAA";
     private static final String UPDATED_COLOR = "BBBBBBBBBB";
 
+    private static final String DEFAULT_IMG = "AAAAAAAAAA";
+    private static final String UPDATED_IMG = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/types";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -61,7 +64,7 @@ class TypeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Type createEntity(EntityManager em) {
-        Type type = new Type().title(DEFAULT_TITLE).color(DEFAULT_COLOR);
+        Type type = new Type().title(DEFAULT_TITLE).color(DEFAULT_COLOR).img(DEFAULT_IMG);
         return type;
     }
 
@@ -72,7 +75,7 @@ class TypeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Type createUpdatedEntity(EntityManager em) {
-        Type type = new Type().title(UPDATED_TITLE).color(UPDATED_COLOR);
+        Type type = new Type().title(UPDATED_TITLE).color(UPDATED_COLOR).img(UPDATED_IMG);
         return type;
     }
 
@@ -96,6 +99,7 @@ class TypeResourceIT {
         Type testType = typeList.get(typeList.size() - 1);
         assertThat(testType.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testType.getColor()).isEqualTo(DEFAULT_COLOR);
+        assertThat(testType.getImg()).isEqualTo(DEFAULT_IMG);
     }
 
     @Test
@@ -129,7 +133,8 @@ class TypeResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(type.getId().intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR)));
+            .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR)))
+            .andExpect(jsonPath("$.[*].img").value(hasItem(DEFAULT_IMG)));
     }
 
     @Test
@@ -145,7 +150,8 @@ class TypeResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(type.getId().intValue()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
-            .andExpect(jsonPath("$.color").value(DEFAULT_COLOR));
+            .andExpect(jsonPath("$.color").value(DEFAULT_COLOR))
+            .andExpect(jsonPath("$.img").value(DEFAULT_IMG));
     }
 
     @Test
@@ -324,6 +330,84 @@ class TypeResourceIT {
 
     @Test
     @Transactional
+    void getAllTypesByImgIsEqualToSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where img equals to DEFAULT_IMG
+        defaultTypeShouldBeFound("img.equals=" + DEFAULT_IMG);
+
+        // Get all the typeList where img equals to UPDATED_IMG
+        defaultTypeShouldNotBeFound("img.equals=" + UPDATED_IMG);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByImgIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where img not equals to DEFAULT_IMG
+        defaultTypeShouldNotBeFound("img.notEquals=" + DEFAULT_IMG);
+
+        // Get all the typeList where img not equals to UPDATED_IMG
+        defaultTypeShouldBeFound("img.notEquals=" + UPDATED_IMG);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByImgIsInShouldWork() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where img in DEFAULT_IMG or UPDATED_IMG
+        defaultTypeShouldBeFound("img.in=" + DEFAULT_IMG + "," + UPDATED_IMG);
+
+        // Get all the typeList where img equals to UPDATED_IMG
+        defaultTypeShouldNotBeFound("img.in=" + UPDATED_IMG);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByImgIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where img is not null
+        defaultTypeShouldBeFound("img.specified=true");
+
+        // Get all the typeList where img is null
+        defaultTypeShouldNotBeFound("img.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByImgContainsSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where img contains DEFAULT_IMG
+        defaultTypeShouldBeFound("img.contains=" + DEFAULT_IMG);
+
+        // Get all the typeList where img contains UPDATED_IMG
+        defaultTypeShouldNotBeFound("img.contains=" + UPDATED_IMG);
+    }
+
+    @Test
+    @Transactional
+    void getAllTypesByImgNotContainsSomething() throws Exception {
+        // Initialize the database
+        typeRepository.saveAndFlush(type);
+
+        // Get all the typeList where img does not contain DEFAULT_IMG
+        defaultTypeShouldNotBeFound("img.doesNotContain=" + DEFAULT_IMG);
+
+        // Get all the typeList where img does not contain UPDATED_IMG
+        defaultTypeShouldBeFound("img.doesNotContain=" + UPDATED_IMG);
+    }
+
+    @Test
+    @Transactional
     void getAllTypesByZikrIsEqualToSomething() throws Exception {
         // Initialize the database
         typeRepository.saveAndFlush(type);
@@ -351,7 +435,8 @@ class TypeResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(type.getId().intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR)));
+            .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR)))
+            .andExpect(jsonPath("$.[*].img").value(hasItem(DEFAULT_IMG)));
 
         // Check, that the count call also returns 1
         restTypeMockMvc
@@ -399,7 +484,7 @@ class TypeResourceIT {
         Type updatedType = typeRepository.findById(type.getId()).get();
         // Disconnect from session so that the updates on updatedType are not directly saved in db
         em.detach(updatedType);
-        updatedType.title(UPDATED_TITLE).color(UPDATED_COLOR);
+        updatedType.title(UPDATED_TITLE).color(UPDATED_COLOR).img(UPDATED_IMG);
 
         restTypeMockMvc
             .perform(
@@ -415,6 +500,7 @@ class TypeResourceIT {
         Type testType = typeList.get(typeList.size() - 1);
         assertThat(testType.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testType.getColor()).isEqualTo(UPDATED_COLOR);
+        assertThat(testType.getImg()).isEqualTo(UPDATED_IMG);
     }
 
     @Test
@@ -485,7 +571,7 @@ class TypeResourceIT {
         Type partialUpdatedType = new Type();
         partialUpdatedType.setId(type.getId());
 
-        partialUpdatedType.title(UPDATED_TITLE);
+        partialUpdatedType.title(UPDATED_TITLE).img(UPDATED_IMG);
 
         restTypeMockMvc
             .perform(
@@ -501,6 +587,7 @@ class TypeResourceIT {
         Type testType = typeList.get(typeList.size() - 1);
         assertThat(testType.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testType.getColor()).isEqualTo(DEFAULT_COLOR);
+        assertThat(testType.getImg()).isEqualTo(UPDATED_IMG);
     }
 
     @Test
@@ -515,7 +602,7 @@ class TypeResourceIT {
         Type partialUpdatedType = new Type();
         partialUpdatedType.setId(type.getId());
 
-        partialUpdatedType.title(UPDATED_TITLE).color(UPDATED_COLOR);
+        partialUpdatedType.title(UPDATED_TITLE).color(UPDATED_COLOR).img(UPDATED_IMG);
 
         restTypeMockMvc
             .perform(
@@ -531,6 +618,7 @@ class TypeResourceIT {
         Type testType = typeList.get(typeList.size() - 1);
         assertThat(testType.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testType.getColor()).isEqualTo(UPDATED_COLOR);
+        assertThat(testType.getImg()).isEqualTo(UPDATED_IMG);
     }
 
     @Test

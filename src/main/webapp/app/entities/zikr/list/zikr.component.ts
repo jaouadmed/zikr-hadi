@@ -7,6 +7,7 @@ import { IZikr } from '../zikr.model';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { ZikrService } from '../service/zikr.service';
 import { ZikrDeleteDialogComponent } from '../delete/zikr-delete-dialog.component';
+import { DataUtils } from 'app/core/util/data-util.service';
 import { ParseLinks } from 'app/core/util/parse-links.service';
 
 @Component({
@@ -22,7 +23,12 @@ export class ZikrComponent implements OnInit {
   predicate: string;
   ascending: boolean;
 
-  constructor(protected zikrService: ZikrService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+  constructor(
+    protected zikrService: ZikrService,
+    protected dataUtils: DataUtils,
+    protected modalService: NgbModal,
+    protected parseLinks: ParseLinks
+  ) {
     this.zikrs = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
@@ -70,6 +76,14 @@ export class ZikrComponent implements OnInit {
 
   trackId(index: number, item: IZikr): number {
     return item.id!;
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    return this.dataUtils.openFile(base64String, contentType);
   }
 
   delete(zikr: IZikr): void {

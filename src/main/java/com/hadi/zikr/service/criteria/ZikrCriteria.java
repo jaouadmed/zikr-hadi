@@ -26,8 +26,6 @@ public class ZikrCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
-    private StringFilter content;
-
     private LongFilter count;
 
     private LongFilter typeId;
@@ -36,7 +34,6 @@ public class ZikrCriteria implements Serializable, Criteria {
 
     public ZikrCriteria(ZikrCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
-        this.content = other.content == null ? null : other.content.copy();
         this.count = other.count == null ? null : other.count.copy();
         this.typeId = other.typeId == null ? null : other.typeId.copy();
     }
@@ -59,21 +56,6 @@ public class ZikrCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
-    }
-
-    public StringFilter getContent() {
-        return content;
-    }
-
-    public StringFilter content() {
-        if (content == null) {
-            content = new StringFilter();
-        }
-        return content;
-    }
-
-    public void setContent(StringFilter content) {
-        this.content = content;
     }
 
     public LongFilter getCount() {
@@ -115,17 +97,12 @@ public class ZikrCriteria implements Serializable, Criteria {
             return false;
         }
         final ZikrCriteria that = (ZikrCriteria) o;
-        return (
-            Objects.equals(id, that.id) &&
-            Objects.equals(content, that.content) &&
-            Objects.equals(count, that.count) &&
-            Objects.equals(typeId, that.typeId)
-        );
+        return Objects.equals(id, that.id) && Objects.equals(count, that.count) && Objects.equals(typeId, that.typeId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, count, typeId);
+        return Objects.hash(id, count, typeId);
     }
 
     // prettier-ignore
@@ -133,7 +110,6 @@ public class ZikrCriteria implements Serializable, Criteria {
     public String toString() {
         return "ZikrCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
-            (content != null ? "content=" + content + ", " : "") +
             (count != null ? "count=" + count + ", " : "") +
             (typeId != null ? "typeId=" + typeId + ", " : "") +
             "}";

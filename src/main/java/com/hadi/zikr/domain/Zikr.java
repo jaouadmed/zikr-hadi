@@ -20,6 +20,7 @@ public class Zikr implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Lob
     @Column(name = "content")
     private String content;
 

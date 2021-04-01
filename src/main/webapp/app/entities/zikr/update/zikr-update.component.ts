@@ -7,6 +7,9 @@ import { finalize, map } from 'rxjs/operators';
 
 import { IZikr, Zikr } from '../zikr.model';
 import { ZikrService } from '../service/zikr.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
+import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { IType } from 'app/entities/type/type.model';
 import { TypeService } from 'app/entities/type/service/type.service';
 
@@ -27,6 +30,8 @@ export class ZikrUpdateComponent implements OnInit {
   });
 
   constructor(
+    protected dataUtils: DataUtils,
+    protected eventManager: EventManager,
     protected zikrService: ZikrService,
     protected typeService: TypeService,
     protected activatedRoute: ActivatedRoute,
@@ -38,6 +43,23 @@ export class ZikrUpdateComponent implements OnInit {
       this.updateForm(zikr);
 
       this.loadRelationshipsOptions();
+    });
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    this.dataUtils.openFile(base64String, contentType);
+  }
+
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: FileLoadError) =>
+        this.eventManager.broadcast(
+          new EventWithContent<AlertError>('zikrApp.error', { message: err.message })
+        ),
     });
   }
 

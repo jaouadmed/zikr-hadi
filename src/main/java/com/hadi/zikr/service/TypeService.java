@@ -55,6 +55,9 @@ public class TypeService {
                     if (type.getColor() != null) {
                         existingType.setColor(type.getColor());
                     }
+                    if (type.getImg() != null) {
+                        existingType.setImg(type.getImg());
+                    }
 
                     return existingType;
                 }

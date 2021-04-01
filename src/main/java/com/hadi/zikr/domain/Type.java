@@ -30,6 +30,9 @@ public class Type implements Serializable {
     @Column(name = "color")
     private String color;
 
+    @Column(name = "img")
+    private String img;
+
     @OneToMany(mappedBy = "type")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "type" }, allowSetters = true)
@@ -73,6 +76,19 @@ public class Type implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getImg() {
+        return this.img;
+    }
+
+    public Type img(String img) {
+        this.img = img;
+        return this;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public Set<Zikr> getZikrs() {
@@ -132,6 +148,7 @@ public class Type implements Serializable {
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
             ", color='" + getColor() + "'" +
+            ", img='" + getImg() + "'" +
             "}";
     }
 }

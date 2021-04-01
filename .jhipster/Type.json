@@ -8,6 +8,10 @@
     {
       "fieldName": "color",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "img",
+      "fieldType": "String"
     }
   ],
   "relationships": [

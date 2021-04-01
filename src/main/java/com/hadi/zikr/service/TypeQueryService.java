@@ -87,6 +87,9 @@ public class TypeQueryService extends QueryService<Type> {
             if (criteria.getColor() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getColor(), Type_.color));
             }
+            if (criteria.getImg() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getImg(), Type_.img));
+            }
             if (criteria.getZikrId() != null) {
                 specification =
                     specification.and(

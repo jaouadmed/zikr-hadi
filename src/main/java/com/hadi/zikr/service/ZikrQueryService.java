@@ -81,9 +81,6 @@ public class ZikrQueryService extends QueryService<Zikr> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Zikr_.id));
             }
-            if (criteria.getContent() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getContent(), Zikr_.content));
-            }
             if (criteria.getCount() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCount(), Zikr_.count));
             }

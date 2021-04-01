@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link ZikrResource} REST controller.
@@ -129,7 +130,7 @@ class ZikrResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(zikr.getId().intValue())))
-            .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT)))
+            .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT.toString())))
             .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.intValue())));
     }
 
@@ -145,7 +146,7 @@ class ZikrResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(zikr.getId().intValue()))
-            .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT))
+            .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT.toString()))
             .andExpect(jsonPath("$.count").value(DEFAULT_COUNT.intValue()));
     }
 
@@ -165,84 +166,6 @@ class ZikrResourceIT {
 
         defaultZikrShouldBeFound("id.lessThanOrEqual=" + id);
         defaultZikrShouldNotBeFound("id.lessThan=" + id);
-    }
-
-    @Test
-    @Transactional
-    void getAllZikrsByContentIsEqualToSomething() throws Exception {
-        // Initialize the database
-        zikrRepository.saveAndFlush(zikr);
-
-        // Get all the zikrList where content equals to DEFAULT_CONTENT
-        defaultZikrShouldBeFound("content.equals=" + DEFAULT_CONTENT);
-
-        // Get all the zikrList where content equals to UPDATED_CONTENT
-        defaultZikrShouldNotBeFound("content.equals=" + UPDATED_CONTENT);
-    }
-
-    @Test
-    @Transactional
-    void getAllZikrsByContentIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        zikrRepository.saveAndFlush(zikr);
-
-        // Get all the zikrList where content not equals to DEFAULT_CONTENT
-        defaultZikrShouldNotBeFound("content.notEquals=" + DEFAULT_CONTENT);
-
-        // Get all the zikrList where content not equals to UPDATED_CONTENT
-        defaultZikrShouldBeFound("content.notEquals=" + UPDATED_CONTENT);
-    }
-
-    @Test
-    @Transactional
-    void getAllZikrsByContentIsInShouldWork() throws Exception {
-        // Initialize the database
-        zikrRepository.saveAndFlush(zikr);
-
-        // Get all the zikrList where content in DEFAULT_CONTENT or UPDATED_CONTENT
-        defaultZikrShouldBeFound("content.in=" + DEFAULT_CONTENT + "," + UPDATED_CONTENT);
-
-        // Get all the zikrList where content equals to UPDATED_CONTENT
-        defaultZikrShouldNotBeFound("content.in=" + UPDATED_CONTENT);
-    }
-
-    @Test
-    @Transactional
-    void getAllZikrsByContentIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        zikrRepository.saveAndFlush(zikr);
-
-        // Get all the zikrList where content is not null
-        defaultZikrShouldBeFound("content.specified=true");
-
-        // Get all the zikrList where content is null
-        defaultZikrShouldNotBeFound("content.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllZikrsByContentContainsSomething() throws Exception {
-        // Initialize the database
-        zikrRepository.saveAndFlush(zikr);
-
-        // Get all the zikrList where content contains DEFAULT_CONTENT
-        defaultZikrShouldBeFound("content.contains=" + DEFAULT_CONTENT);
-
-        // Get all the zikrList where content contains UPDATED_CONTENT
-        defaultZikrShouldNotBeFound("content.contains=" + UPDATED_CONTENT);
-    }
-
-    @Test
-    @Transactional
-    void getAllZikrsByContentNotContainsSomething() throws Exception {
-        // Initialize the database
-        zikrRepository.saveAndFlush(zikr);
-
-        // Get all the zikrList where content does not contain DEFAULT_CONTENT
-        defaultZikrShouldNotBeFound("content.doesNotContain=" + DEFAULT_CONTENT);
-
-        // Get all the zikrList where content does not contain UPDATED_CONTENT
-        defaultZikrShouldBeFound("content.doesNotContain=" + UPDATED_CONTENT);
     }
 
     @Test
@@ -377,7 +300,7 @@ class ZikrResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(zikr.getId().intValue())))
-            .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT)))
+            .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT.toString())))
             .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.intValue())));
 
         // Check, that the count call also returns 1

@@ -14,17 +14,15 @@ import { TypeService } from '../service/type.service';
 })
 export class TypeUpdateComponent implements OnInit {
   isSaving = false;
-  color: string;
 
   editForm = this.fb.group({
     id: [],
     title: [],
     color: [],
+    img: [],
   });
 
-  constructor(protected typeService: TypeService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {
-    this.color = '';
-  }
+  constructor(protected typeService: TypeService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ type }) => {
@@ -70,8 +68,8 @@ export class TypeUpdateComponent implements OnInit {
       id: type.id,
       title: type.title,
       color: type.color,
+      img: type.img,
     });
-    this.color = type.color ? type.color : 'blue';
   }
 
   protected createFromForm(): IType {
@@ -80,6 +78,7 @@ export class TypeUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       title: this.editForm.get(['title'])!.value,
       color: this.editForm.get(['color'])!.value,
+      img: this.editForm.get(['img'])!.value,
     };
   }
 }

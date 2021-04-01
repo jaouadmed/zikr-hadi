@@ -35,6 +35,7 @@
           <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="title"><span>Title</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="color"><span>Color</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="img"><span>Img</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -45,6 +46,7 @@
           </td>
           <td>{{ type.title }}</td>
           <td>{{ type.color }}</td>
+          <td>{{ type.img }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/type', type.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
