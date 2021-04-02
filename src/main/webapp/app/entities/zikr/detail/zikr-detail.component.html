@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
   <div class="col-8">
     <div *ngIf="zikr">
-      <h2 data-cy="zikrDetailsHeading"><span>Zikr</span></h2>
+      <h2 data-cy="zikrDetailsHeading"><span>ذكر</span></h2>
 
       <hr />
 
@@ -10,19 +10,19 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span>ID</span></dt>
+        <dt><span>هوية</span></dt>
         <dd>
           <span>{{ zikr.id }}</span>
         </dd>
-        <dt><span>Content</span></dt>
+        <dt><span>المحتوى</span></dt>
         <dd>
           <span>{{ zikr.content }}</span>
         </dd>
-        <dt><span>Count</span></dt>
+        <dt><span>مرات الاعادة</span></dt>
         <dd>
           <span>{{ zikr.count }}</span>
         </dd>
-        <dt><span>Type</span></dt>
+        <dt><span>التقسيم</span></dt>
         <dd>
           <div *ngIf="zikr.type">
             <a [routerLink]="['/type', zikr.type?.id, 'view']">{{ zikr.type?.title }}</a>
@@ -31,11 +31,11 @@
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>عودة</span>
       </button>
 
       <button type="button" [routerLink]="['/zikr', zikr.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>تعديل</span>
       </button>
     </div>
   </div>

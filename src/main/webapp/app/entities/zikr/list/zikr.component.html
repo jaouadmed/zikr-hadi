@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="ZikrHeading">
-    <span>Zikrs</span>
+    <span>اذكار</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh List</span>
+        <span>تحديث القائمة</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/zikr/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span> Create a new Zikr </span>
+        <span> إنشاء ذكر جديد </span>
       </button>
     </div>
   </h2>
@@ -25,17 +25,29 @@
   <jhi-alert></jhi-alert>
 
   <div class="alert alert-warning" id="no-result" *ngIf="zikrs?.length === 0">
-    <span>No zikrs found</span>
+    <span>لم يتم العثور على ذكر</span>
   </div>
 
   <div class="table-responsive" id="entities" *ngIf="zikrs && zikrs.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="content"><span>Content</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="count"><span>Count</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="type.title"><span>Type</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="id">
+            <span>هوية</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="content">
+            <span>المحتوى</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="count">
+            <span>مرات الاعادة</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="type.title">
+            <span>التقسيم</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -55,17 +67,17 @@
             <div class="btn-group">
               <button type="submit" [routerLink]="['/zikr', zikr.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline">View</span>
+                <span class="d-none d-md-inline">اظهار</span>
               </button>
 
               <button type="submit" [routerLink]="['/zikr', zikr.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline">Edit</span>
+                <span class="d-none d-md-inline">تعديل</span>
               </button>
 
               <button type="submit" (click)="delete(zikr)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline">Delete</span>
+                <span class="d-none d-md-inline">حذف</span>
               </button>
             </div>
           </td>

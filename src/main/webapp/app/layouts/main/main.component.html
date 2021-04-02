@@ -18,14 +18,14 @@
 
 <ng-template #back>
   <jhi-page-ribbon></jhi-page-ribbon>
-  <div>
+  <div style="direction: rtl">
     <router-outlet name="navbar"></router-outlet>
   </div>
-  <div class="container-fluid">
+  <div class="container-fluid" style="direction: rtl; text-align: right">
     <div class="card jh-card">
       <router-outlet></router-outlet>
     </div>
 
-    <jhi-footer></jhi-footer>
+    <!--jhi-footer style="direction: rtl;"></jhi-footer-->
   </div>
 </ng-template>

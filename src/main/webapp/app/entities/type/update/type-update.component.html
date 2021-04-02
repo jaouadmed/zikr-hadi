@@ -1,23 +1,23 @@
 <div class="row justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-type-heading" data-cy="TypeCreateUpdateHeading">Create or edit a Type</h2>
+      <h2 id="jhi-type-heading" data-cy="TypeCreateUpdateHeading">إنشاء أو تحرير تقسيم</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
 
         <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" for="field_id">ID</label>
+          <label class="form-control-label" for="field_id">هوية</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="field_title">Title</label>
+          <label class="form-control-label" for="field_title">اسم</label>
           <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="field_color">Color</label>
+          <label class="form-control-label" for="field_color">اللون</label>
           <!--input type="text" class="form-control" name="color" id="field_color" data-cy="color" formControlName="color" /-->
           <input
             [colorPicker]="editForm.get(['color'])!.value"
@@ -30,14 +30,14 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="field_img">Img</label>
+          <label class="form-control-label" for="field_img">خلفية</label>
           <input type="text" class="form-control" name="img" id="field_img" data-cy="img" formControlName="img" />
         </div>
       </div>
 
       <div>
         <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>إلغاء</span>
         </button>
 
         <button
@@ -47,7 +47,7 @@
           [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>حفظ</span>
         </button>
       </div>
     </form>

@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="TypeHeading">
-    <span>Types</span>
+    <span>تقسيمات الأذكار</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh List</span>
+        <span>تحديث القائمة</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/type/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span> Create a new Type </span>
+        <span> قم بإنشاء تقسيم جديد </span>
       </button>
     </div>
   </h2>
@@ -25,17 +25,29 @@
   <jhi-alert></jhi-alert>
 
   <div class="alert alert-warning" id="no-result" *ngIf="types?.length === 0">
-    <span>No types found</span>
+    <span>لم يتم العثور على أنواع</span>
   </div>
 
   <div class="table-responsive" id="entities" *ngIf="types && types.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="title"><span>Title</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="color"><span>Color</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="img"><span>Img</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="id">
+            <span>هوية </span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="title">
+            <span>اسم</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="color">
+            <span>اللون</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="img">
+            <span>خلفية</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -51,17 +63,17 @@
             <div class="btn-group">
               <button type="submit" [routerLink]="['/type', type.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline">View</span>
+                <span class="d-none d-md-inline">اظهار</span>
               </button>
 
               <button type="submit" [routerLink]="['/type', type.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline">Edit</span>
+                <span class="d-none d-md-inline">تعديل</span>
               </button>
 
               <button type="submit" (click)="delete(type)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline">Delete</span>
+                <span class="d-none d-md-inline">حذف</span>
               </button>
             </div>
           </td>
