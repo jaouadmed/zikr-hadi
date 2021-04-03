@@ -80,6 +80,10 @@ export class CardComponent implements OnInit, OnDestroy {
     window.console.log(this.index);
   }
 
+  resetIndex(): void {
+    this.index = 0;
+  }
+
   ngOnDestroy(): void {
     this.parentSubject.unsubscribe();
   }
