@@ -54,7 +54,17 @@ export class CardComponent implements OnInit, OnDestroy {
     window.console.log('oninit');
   }
 
-  startAnimation(): void {
+  startAnimation(state: string): void {
+    if (state !== '') {
+      this.onetime = 0;
+      this.animationState = state;
+      this.firstTimeCounter = true;
+      if (this.index < this.azkar.length - 1) {
+        this.counter = this.azkar[this.index + 1].count;
+      }
+      return;
+    }
+
     this.onetime = 0;
     if (this.firstTimeCounter) {
       this.counter = this.azkar[this.index].count;

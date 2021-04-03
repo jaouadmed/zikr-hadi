@@ -5,9 +5,16 @@
 <div class="tcard" style="z-index: 0" *ngIf="index + 1 < azkar.length">
   <div class="tcontent">{{ azkar[index + 1].content }}</div>
 </div>
-<div class="tcard" *ngIf="index < azkar.length" [@cardAnimator]="animationState" (@cardAnimator.done)="resetAnimationState()">
+<div
+  class="tcard"
+  *ngIf="index < azkar.length"
+  [@cardAnimator]="animationState"
+  (@cardAnimator.done)="resetAnimationState()"
+  (swipeleft)="startAnimation('swipeleft')"
+  (swiperight)="startAnimation('swiperight')"
+>
   <div class="tcontent">{{ azkar[index].content }}</div>
-  <div class="tcontrols" (click)="startAnimation()">
+  <div class="tcontrols" (click)="startAnimation('')">
     {{ counter }} من {{ azkar[index].count }} <br />
     المس هنا بعد قراءة الذكر
   </div>
